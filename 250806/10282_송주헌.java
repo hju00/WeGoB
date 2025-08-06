@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 
 // List 초기화할 때 간선 개수만큼 초기화 해줬는데
 // 그래서 메모리 초과가 났던거였네요
-public class Main {
+public class 10282_송주헌 {
     private static int n;
     private static int c;
 
