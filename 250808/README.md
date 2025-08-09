@@ -54,3 +54,97 @@ N명의 선수들이 L개의 리그에 나뉘어 경기를 진행하는 시뮬�
 -   **메모리**: 256MB 이내
 -   `move()` 함수는 최대 500회 호출됩니다.
 -   `trade()` 함수는 최대 1,000회 호출됩니다.
+
+
+# SWEA B형 대비 문제 실행 가이드
+
+B형 기출/대비 문제는 \*\*채점기(main)\*\*와 \*\*사용자 구현부(UserSolution)\*\*가 분리되어 있습니다.
+입출력은 채점기가 처리하고, 우리는 `UserSolution.java` 안의 알고리즘만 작성하면 됩니다.
+
+---
+
+## 📂 폴더 구조 예시
+
+```
+pro_relegationLeague/
+ ├─ Solution.java        # 채점기 (수정 ❌)
+ ├─ UserSolution.java    # 우리가 구현할 부분 (수정 ⭕)
+ └─ res/
+     └─ sample_input.txt # 테스트 입력 파일
+```
+
+---
+
+## 🛠 실행 흐름
+
+### 1. `Solution.java` (채점기)
+
+* 문제에서 제공하는 기본 뼈대
+* 입력을 읽고, 명령(CMD\_INIT, CMD\_MOVE, CMD\_TRADE 등)에 맞춰 `UserSolution`의 함수를 호출
+* 출력까지 자동으로 처리
+* ⚠ **수정하면 안 됨** (채점 서버에서 오류 가능)
+
+### 2. `UserSolution.java` (사용자 구현부)
+
+* 우리가 직접 구현해야 하는 부분
+* `init(...)`, `move()`, `trade()` 함수를 완성
+* 자료구조 초기화, 연산 처리 로직 작성
+
+---
+
+## 💻 로컬에서 파일 입출력 테스트 방법
+
+1. **`sample_input.txt` 생성**
+
+   * 문제 예제 입력을 파일로 저장
+     예시:
+
+   ```
+   1 100
+   5
+   100 4 1 2 3 4
+   200 1
+   300 2
+   ```
+
+2. **`Solution.java`에서 `System.setIn` 주석 해제**
+
+   ```java
+   System.setIn(new java.io.FileInputStream("res/sample_input.txt"));
+   ```
+
+3. **컴파일 및 실행**
+
+   ```bash
+   javac pro_relegationLeague/*.java
+   java pro_relegationLeague.Solution
+   ```
+
+---
+
+
+## 📚 실행 흐름 예시 (승강제 리그)
+
+1. **`CMD_INIT`** → `init(N, L, mAbility)` 호출
+
+   * 선수 수, 리그 수, 능력치 초기 세팅
+
+2. **`CMD_MOVE`** → `move()` 호출
+
+   * 승강/강등 처리, 리턴값 비교
+
+3. **`CMD_TRADE`** → `trade()` 호출
+
+   * 선수 교환 처리, 리턴값 비교
+
+채점기는 `ans`와 리턴값을 비교해 점수를 부여합니다.
+
+---
+
+## 🏷 참고
+
+* 제출 시에는 **`UserSolution.java`만 업로드**
+* 로컬 테스트 시에는 `sample_input.txt`로 입출력 확인
+* 채점 서버와 동일하게 테스트하려면 `System.setIn` 주석 처리 후 콘솔 입력 사용
+
+---
