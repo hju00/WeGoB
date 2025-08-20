@@ -1,4 +1,4 @@
-public class UserSolution_13072 { 
+public class UserSolution { 
 	
 	Team[] teams;
 	Soldier[] soldiers;
