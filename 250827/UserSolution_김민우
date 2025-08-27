@@ -1,0 +1,128 @@
+import java.util.*;
+
+class UserSolution {
+
+    private Map<Integer, Department> department;
+    Department[] rootArr;
+
+    public void init(int N, int mId[], int mNum[]) {
+        department = new HashMap<>(); // O(1)의 각 노드 검색용
+        rootArr = new Department[N]; // 루트노드 저장
+
+        for (int i = 0; i < N; i++) {
+            Department root = new Department(mId[i], mNum[i]);
+            rootArr[i] = root;
+            department.put(mId[i], root);
+        }
+    }
+
+    // mid : 부서id, / mNum : 부서 인원 수 / mParnt : 상위부서Id
+    public int add(int mId, int mNum, int mParent) {
+
+        Department parent = department.get(mParent);
+        if (parent.children.size() >= 3) return -1;
+
+        Department current = new Department(mId, mNum);
+        current.parent = parent;
+        parent.children.add(current);
+        department.put(mId, current);
+
+        // 삽입시마다 미리 인원 수 계산
+        current = parent;
+        while (current != null) {
+            current.subTreeCnt += mNum;
+            current = current.parent;
+        }
+
+        return parent.subTreeCnt;
+    }
+
+    public int remove(int mId) {
+        if (!department.containsKey(mId)) return -1;
+
+        Department remove = department.get(mId);
+        int removeCnt = remove.subTreeCnt;
+        Department parent = remove.parent;
+
+        if (parent != null) {
+            parent.children.remove(remove);
+        }
+
+        Department current = parent;
+        while (current != null) {
+            current.subTreeCnt -= removeCnt;
+            current = current.parent;
+        }
+
+        Queue<Department> queue = new LinkedList<>();
+        queue.add(remove);
+        while (!queue.isEmpty()) {
+            Department node = queue.poll();
+            department.remove(node.id);
+            for (Department child : node.children) {
+                queue.add(child);
+            }
+        }
+
+        return removeCnt;
+    }
+
+    public int distribute(int K) {
+        int n = rootArr.length;
+        int[] groupSizes = new int[n];
+        long totalPerson = 0; // 총인원 수
+        int maxGroupSize = 0; //
+
+        for (int i = 0; i < n; i++) {
+            groupSizes[i] = rootArr[i].subTreeCnt;
+            totalPerson += groupSizes[i];
+            if (groupSizes[i] > maxGroupSize) {
+                maxGroupSize = groupSizes[i];
+            }
+        }
+
+        // 총인원수가 K 이하인 경우, 가장 큰 그룹의 인원수 반환
+        if (totalPerson <= K) {
+            return maxGroupSize;
+        }
+
+        int start = 0, end = K;
+        int result = 0;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            long neededCerts = 0;
+
+            for (int size : groupSizes) {
+                neededCerts += Math.min(size, mid);
+            }
+
+            if (neededCerts <= K) {
+                // mid는 가능한 상한선. 더 큰 상한선을 찾아본다.
+                result = mid;
+                start = mid + 1;
+            } else {
+                // 상품권이 부족하므로 상한선을 낮춘다.
+                end = mid - 1;
+            }
+        }
+
+        return result;
+    }
+
+    static class Department {
+        int id;
+        int personCnt;
+        int subTreeCnt;
+        Department parent;
+        List<Department> children = new ArrayList<>();
+
+        Department(int id, int personCnt) {
+            this.id = id;
+            this.personCnt = personCnt;
+            this.subTreeCnt = personCnt;
+            this.parent = null;
+            this.children = new ArrayList<>();
+        }
+    }
+}
