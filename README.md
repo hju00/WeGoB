@@ -1,0 +1,128 @@
+# 🚀 WeGoB (We Go B)
+
+**SW 역량 테스트 B형 달성을 위한 알고리즘 스터디**
+
+\<div align="center"\>
+\<img src="[https://img.shields.io/badge/Java-007396?style=for-the-badge\&logo=java\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/Java-007396%3Fstyle%3Dfor-the-badge%26logo%3Djava%26logoColor%3Dwhite)" /\>
+\<img src="[https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge\&logo=cplusplus\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/C%252B%252B-00599C%3Fstyle%3Dfor-the-badge%26logo%3Dcplusplus%26logoColor%3Dwhite)" /\>
+\<img src="[https://img.shields.io/badge/Git-F05032?style=for-the-badge\&logo=git\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/Git-F05032%3Fstyle%3Dfor-the-badge%26logo%3Dgit%26logoColor%3Dwhite)" /\>
+\<img src="[https://img.shields.io/badge/GitHub-181717?style=for-the-badge\&logo=github\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/GitHub-181717%3Fstyle%3Dfor-the-badge%26logo%3Dgithub%26logoColor%3Dwhite)" /\>
+\</div\>
+
+-----
+
+## 🎯 스터디 목표
+
+  * **SW 역량 테스트 B형 달성**
+  * **코드 리뷰**를 통한 코드 분석 및 설계 역량 향상
+  * **Git & GitHub** 워크플로우 숙달
+
+-----
+
+## 🧑‍💻 멤버
+
+  * 👑 **박형주 (스터디장)**
+  * 김회인
+  * 손홍민
+  * 송주헌
+  * 전석균
+
+-----
+
+## 🗓️ 스터디 계획
+
+### 1\. 핵심 목표
+
+  * **주 1회 이상** B형 기출 문제 혹은 비슷한 유형의 문제 풀이
+
+### 2\. 진행 방식
+
+  * **사용 언어**: `` `Java` ``, `` `C++` ``
+  * **문제 풀이**: 매 주 공지된 문제를 1개 이상 풀어 깃허브에 업로드
+  * **코드 리뷰**: 다른 사람이 작성한 코드를 리뷰하며 코드 분석 능력 및 인사이트 향상
+  * **고민의 흔적**:
+      * 문제를 푸는 것뿐만 아니라, **문제를 분석하고 아이디어를 구상**하는 능력을 향상시킵니다.
+      * **1시간 이상** 충분히 고민하고, 고민한 과정을 **필기 또는 주석**으로 흔적을 남깁니다.
+      * (미해결 시) 푼 흔적(작성 코드, 제출 기록, 필기 등)으로 대체 가능합니다.
+  * **참석**: 건강 이상, 면접/코테 등 불참 이슈 발생 시 **사전 연락** 필수
+
+-----
+
+## 🌿 Git 워크플로우
+
+스터디는 다음 Git 브랜치 전략을 따릅니다.
+
+### 1\. 저장소 클론 (최초 1회)
+
+```bash
+git clone [레포지토리 주소]
+```
+
+### 2\. 메인 브랜치 최신화 (작업 시작 전)
+
+항상 작업을 시작하기 전에 `main` (혹은 `master`) 브랜치를 최신 상태로 유지합니다.
+
+```bash
+git pull origin main
+```
+
+### 3\. 기능 브랜치 생성 및 이동
+
+개인별 작업 브랜치를 생성하고 해당 브랜치로 이동합니다.
+
+```bash
+git checkout -b [브랜치명]
+```
+
+> 💡 **브랜치명 컨벤션**
+>
+> `feature/weekMM_WW_이름` (예: `feature/week01_1_홍길동`)
+>
+>   * 식별 가능하도록 자유롭게 작성하셔도 됩니다.
+
+### 4\. 문제 풀이 및 커밋
+
+  * 문제를 푼 파일들을 개인 폴더에 저장합니다. (파일명으로 문제 식별이 가능해야 함)
+  * 문제별로 커밋(Commit)을 생성합니다.
+
+<!-- end list -->
+
+```bash
+# 변경된 파일 추가
+git add .
+
+# 커밋 생성
+git commit -m "커밋 메시지"
+"커밋 메시지"는 아래 형식을 따릅니다.
+    * <문제 제목> 문제 풀이
+```
+
+> 💡 **Tip**
+>
+> VSC, IntelliJ 등의 GUI 툴을 활용하여 커밋과 푸시를 진행해도 됩니다.
+
+### 5\. 원격 저장소에 푸시
+
+로컬 브랜치의 변경 사항을 원격 저장소(GitHub)에 푸시합니다.
+
+```bash
+git push origin [브랜치명]
+```
+
+> ❗ **Upstream 오류 발생 시**
+>
+> 만약 fatal: The current branch... has no upstream branch. 오류가 발생하면,
+>
+> 원격 저장소에 현재 브랜치가 없다는 의미이므로 아래 명령어를 사용해 업로드합니다.
+>
+> ```bash
+> git push --set-upstream origin [브랜치명]
+> ```
+
+### 6\. Pull Request (PR) 생성
+
+1.  GitHub 레포지토리로 이동하여 `Compare & pull request` 버튼을 클릭합니다.
+2.  **PR 제목**은 아래 형식을 따릅니다.
+      * `[Week] 이름 - <문제 제목> 문제 풀이`
+      * (예: `[1주차] 홍길동 - [Pro] 전기차여행 문제 풀이`)
+3.  PR 템플릿에 맞춰 내용을 작성한 후 PR을 생성합니다.
