@@ -2,12 +2,9 @@
 
 **SW 역량 테스트 B형 달성을 위한 알고리즘 스터디**
 
-\<div align="center"\>
-\<img src="[https://img.shields.io/badge/Java-007396?style=for-the-badge\&logo=java\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/Java-007396%3Fstyle%3Dfor-the-badge%26logo%3Djava%26logoColor%3Dwhite)" /\>
-\<img src="[https://img.shields.io/badge/C%2B%2B-00599C?style=for-the-badge\&logo=cplusplus\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/C%252B%252B-00599C%3Fstyle%3Dfor-the-badge%26logo%3Dcplusplus%26logoColor%3Dwhite)" /\>
-\<img src="[https://img.shields.io/badge/Git-F05032?style=for-the-badge\&logo=git\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/Git-F05032%3Fstyle%3Dfor-the-badge%26logo%3Dgit%26logoColor%3Dwhite)" /\>
-\<img src="[https://img.shields.io/badge/GitHub-181717?style=for-the-badge\&logo=github\&logoColor=white](https://www.google.com/search?q=https://img.shields.io/badge/GitHub-181717%3Fstyle%3Dfor-the-badge%26logo%3Dgithub%26logoColor%3Dwhite)" /\>
-\</div\>
+<div align="center">
+  <img src="img/wegob_logo.png" alt="WeGoB Study Logo" width="200"/>
+</div>
 
 -----
 
