@@ -3,7 +3,7 @@
 **SW 역량 테스트 B형 달성을 위한 알고리즘 스터디**
 
 <div align="center">
-  <img src="img/wegob_logo.png" alt="WeGoB Study Logo" width="200"/>
+  <img src="img/wegob_logo.png" alt="WeGoB Study Logo" width="200"/>  
 </div>
 
 -----
