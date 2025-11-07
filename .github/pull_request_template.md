@@ -1,20 +1,4 @@
-# [11월 1주차] OOO - [Pro] 전기차여행 문제 풀이
----
-
-### 📚 이번 주에 푼 문제
-<!-- AUTO_GENERATED_PROBLEM_LIST_START -->
-<!-- AUTO_GENERATED_PROBLEM_LIST_END -->
-
-<br>
-
-### 💡 새롭게 알게 된 것
-- 
-
-<br>
-
-### 🤔 아쉬웠던 점 & 궁금한 점
-- 
-
+# [11월 2주차] OOO - [Pro] 전기차여행 문제 풀이
 
 ## 🔎 해당 주차 회고
 - 
