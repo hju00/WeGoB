@@ -154,6 +154,8 @@ class UserSolution {
 
             // 인접 도시에 퍼뜨리기
             for(Road road : graph[cur.to]) {
+                if(road.removed) continue;
+
                 int nextTime = cur.time + road.time;
 
                 if(virusDist[road.to] > nextTime) {
@@ -183,6 +185,8 @@ class UserSolution {
 
             // 1. 이동해보기
             for(Road road : graph[cur.to]) {
+                if(road.removed) continue;
+
                 // 배터리 충분?
                 if(cur.battery >= road.power) {
                     int nextTime = cur.time + road.time;
