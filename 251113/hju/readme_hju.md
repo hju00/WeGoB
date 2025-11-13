@@ -23,12 +23,13 @@
 
 ## 시간 복잡도
 - init() X 1
-- ally() X 8,000
+- ally() X 8,000 -> 사실상 ally()가 union 기능
 - attack() X 8,000
 - recruit() X 13,000
 
 ## 자료 구조
     HashMap<String, Integer> monarchDB
     int[N][N] soldier
-    int[N * N][2] parent
-    HashSet<Integer>[N * N] group
+    int[N * N] parent
+    boolean[N * N][N * N] hostile   // 적대 관계를 true로
+    HashSet<Integer>[N * N] allyList
