@@ -2,9 +2,9 @@ import java.util.*;
 
 class UserSolution {
 
-    static class Node {
+    static class Word {
         int id, start, end, len;
-        public Node(int id, int start, int len) {
+        public Word(int id, int start, int len) {
             this.id = id;
             this.start = start;
             this.end = start + len;
@@ -13,70 +13,76 @@ class UserSolution {
     }
 
     static int N, M;
-    static ArrayList<Node>[] lines;      		// °¢ ÇàÀÇ ´Ü¾î ¸®½ºÆ®
-    static HashMap<Integer, Integer> idToRow; 	// ´Ü¾î ID -> Çà ¹øÈ£ ¸ÅÇÎ (»èÁ¦ ½Ã ºü¸¥ Á¢±Ù¿ë)
+    static ArrayList<Word>[] wordList;      	// ê° í–‰ì˜ ë‹¨ì–´ ë¦¬ìŠ¤íŠ¸
+    static HashMap<Integer, Integer> idToRow; 	// ë‹¨ì–´ ID -> í–‰ ë²ˆí˜¸ ë§¤í•‘ (ì‚­ì œ ì‹œ ë¹ ë¥¸ ì ‘ê·¼ìš©)
     
-    static int[] rowMaxGap;    // °¢ Çàº° ÃÖ´ë ºó °ø°£ Å©±â
-    static int[] bucketMaxGap; // °¢ ¹öÅ¶º° ÃÖ´ë ºó °ø°£ Å©±â
-    static int BUCKET_SIZE;    // ¹öÅ¶ Å©±â (¡îN)
+    static int[] rowMax;    // ê° í–‰ë³„ ìµœëŒ€ ë¹ˆ ê³µê°„ í¬ê¸°
+    static int[] bucketMax; // ê° ë²„í‚·ë³„ ìµœëŒ€ ë¹ˆ ê³µê°„ í¬ê¸°
+    static int BUCKET_SIZE; // ë²„í‚· í¬ê¸° (âˆšN)
 
     public void init(int N, int M) {
         this.N = N;
         this.M = M;
         
-        lines = new ArrayList[N];
+        wordList = new ArrayList[N];
         for (int i = 0; i < N; i++) 
-            lines[i] = new ArrayList<>();
+            wordList[i] = new ArrayList<>();
         
         idToRow = new HashMap<>();
-        rowMaxGap = new int[N];
-        Arrays.fill(rowMaxGap, M); // Ã³À½¿£ ¸ğµç ÇàÀÌ M¸¸Å­ ºñ¾îÀÖÀ½
+        rowMax = new int[N];
+        Arrays.fill(rowMax, M);
 
-        // ¹öÅ¶ ÃÊ±âÈ­
+        // ë²„í‚· ì´ˆê¸°í™”
         BUCKET_SIZE = (int) Math.sqrt(N);
         int bucketCount = (N + BUCKET_SIZE - 1) / BUCKET_SIZE;
-        bucketMaxGap = new int[bucketCount];
-        Arrays.fill(bucketMaxGap, M);
+        bucketMax = new int[bucketCount];
+        Arrays.fill(bucketMax, M);
     }
 
-    // ÇØ´ç Çà(row)ÀÇ ÃÖ´ë ºó °ø°£À» ´Ù½Ã °è»êÇÏ°í, ¹öÅ¶ Á¤º¸µµ °»½ÅÇÏ´Â ÇÔ¼ö
+    // í•´ë‹¹ í–‰ì˜ ìµœëŒ€ ë¹ˆ ê³µê°„ì„ ë‹¤ì‹œ ê³„ì‚°í•˜ê³ , ë²„í‚· ì •ë³´ë„ ê°±ì‹ , ìµœëŒ€ ì—°ì‚° ì•½ 200
     void updateMaxGap(int row) {
         int maxGap = 0;
         int prevEnd = 0;
         
-        // ´Ü¾î »çÀÌ»çÀÌÀÇ ºó °ø°£ È®ÀÎ
-        for (Node node : lines[row]) {
-            maxGap = Math.max(maxGap, node.start - prevEnd);
-            prevEnd = node.end;
+        // ë‹¨ì–´ ì‚¬ì´ì‚¬ì´ì˜ ë¹ˆ ê³µê°„ í™•ì¸
+        // ìµœëŒ€ 60íšŒ
+        for (Word word : wordList[row]) {
+            maxGap = Math.max(maxGap, word.start - prevEnd);
+            prevEnd = word.end;
         }
         
-        // ¸¶Áö¸· ´Ü¾î¿Í ³¡ º® »çÀÌÀÇ °ø°£ È®ÀÎ
+        // ë§ˆì§€ë§‰ ë‹¨ì–´ì™€ ë ë²½ ì‚¬ì´ì˜ ê³µê°„ í™•ì¸
         maxGap = Math.max(maxGap, M - prevEnd);
         
-        rowMaxGap[row] = maxGap;
+        // í–‰ì˜ ìµœëŒ€ ê³µë°± ê°±ì‹ 
+        rowMax[row] = maxGap;
 
-        // ÇØ´ç ÇàÀÌ ¼ÓÇÑ ¹öÅ¶ÀÇ ÃÖ´ë°ª °»½Å
+        // í•´ë‹¹ í–‰ì´ ì†í•œ ë²„í‚·ì˜ ìµœëŒ€ê°’ ê°±ì‹ 
         int bIdx = row / BUCKET_SIZE;
         int bMax = 0;
         int start = bIdx * BUCKET_SIZE;
         int end = Math.min(start + BUCKET_SIZE, N);
         
+        // ìµœëŒ€ ë²„í‚· í¬ê¸° 141
         for (int i = start; i < end; i++)
-            bMax = Math.max(bMax, rowMaxGap[i]);
-        bucketMaxGap[bIdx] = bMax;
+            bMax = Math.max(bMax, rowMax[i]);
+        bucketMax[bIdx] = bMax;
     }
 
+
+    // ìµœëŒ€ ì—°ì‚° ì•½ 620íšŒ ì´í•˜
     public int writeWord(int mId, int mLen) {
         int targetRow = -1;
 
-        for (int i = 0; i < bucketMaxGap.length; i++) {
-            if (bucketMaxGap[i] >= mLen) {
-                // ÀÌ ¹öÅ¶ ¾È¿¡ °¡´ÉÇÑ ÇàÀÌ ÀÖÀ½ -> Çà ´ÜÀ§ Å½»ö
+        // ìˆœíšŒ ì—°ì‚° 300íšŒ ì´í•˜
+        for (int i = 0; i < bucketMax.length; i++) {
+            if (bucketMax[i] >= mLen) {
+                // ì´ ë²„í‚· ì•ˆì— ê°€ëŠ¥í•œ í–‰ì´ ìˆìŒ -> í–‰ ë‹¨ìœ„ íƒìƒ‰
                 int start = i * BUCKET_SIZE;
                 int end = Math.min(start + BUCKET_SIZE, N);
                 
                 for (int j = start; j < end; j++)
-                    if (rowMaxGap[j] >= mLen) {
+                    if (rowMax[j] >= mLen) {
                         targetRow = j;
                         break;
                     }
@@ -86,15 +92,15 @@ class UserSolution {
 
         if (targetRow == -1) return -1;
 
-        // 2. Ã£Àº Çà¿¡ ´Ü¾î »ğÀÔ
-        ArrayList<Node> line = lines[targetRow];
+        ArrayList<Word> line = wordList[targetRow];
         int prevEnd = 0;
-        int insertIdx = 0; // ¸®½ºÆ®¿¡ »ğÀÔÇÒ ÀÎµ¦½º
+        int insertIdx = 0;
         int insertStart = -1;
 
-        // µé¾î°¥ À§Ä¡ Ã£±â (ºó °ø°£ °è»ê)
+        // ë“¤ì–´ê°ˆ ìœ„ì¹˜ ì°¾ê¸° (ë¹ˆ ê³µê°„ ê³„ì‚°)
+        // ìˆœíšŒ ì—°ì‚° 60íšŒ ì´í•˜
         for (int i = 0; i < line.size(); i++) {
-            Node curr = line.get(i);
+            Word curr = line.get(i);
             if (curr.start - prevEnd >= mLen) {
                 insertStart = prevEnd;
                 insertIdx = i;
@@ -103,36 +109,41 @@ class UserSolution {
             prevEnd = curr.end;
         }
         
-        // Áß°£¿¡ ¸ø ³Ö¾úÀ¸¸é ¸Ç µÚ¿¡ ³ÖÀ½
+        // ì¤‘ê°„ì— ëª» ë„£ì—ˆìœ¼ë©´ ë§¨ ë’¤ì— ë„£ìŒ
         if (insertStart == -1) {
             insertStart = prevEnd;
             insertIdx = line.size();
         }
 
-        // µ¥ÀÌÅÍ ÀúÀå ¹× °»½Å
-        line.add(insertIdx, new Node(mId, insertStart, mLen));
+        // ë°ì´í„° ì €ì¥ ë° ê°±ì‹ 
+        // ArrayList index ì‚½ì… ì‹œê°„ë³µì¡ë„ O(N) -> 60íšŒ ì´í•˜
+        line.add(insertIdx, new Word(mId, insertStart, mLen));
         idToRow.put(mId, targetRow);
         
-        updateMaxGap(targetRow); // Çà ¹× ¹öÅ¶ Á¤º¸ °»½Å
+        // í–‰ ë° ë²„í‚· ì •ë³´ ê°±ì‹ 
+        updateMaxGap(targetRow);
 
         return targetRow;
     }
 
+    // ìµœëŒ€ ì—°ì‚° ì•½ 320íšŒ ì´í•˜
     public int eraseWord(int mId) {
         if (!idToRow.containsKey(mId)) return -1;
 
         int row = idToRow.remove(mId);
-        ArrayList<Node> line = lines[row];
+        ArrayList<Word> line = wordList[row];
 
-        // ¸®½ºÆ®¿¡¼­ ÇØ´ç ID¸¦ °¡Áø ´Ü¾î »èÁ¦
+        // ë¦¬ìŠ¤íŠ¸ì—ì„œ í•´ë‹¹ IDë¥¼ ê°€ì§„ ë‹¨ì–´ ì‚­ì œ
+        // ìˆœíšŒ ì—°ì‚° 60íšŒ ì´í•˜
         for (int i = 0; i < line.size(); i++) {
             if (line.get(i).id == mId) {
+                // ArrayList index ì‚­ì œ ì‹œê°„ë³µì¡ë„ O(N) -> 60íšŒ ì´í•˜
                 line.remove(i);
                 break;
             }
         }
 
-        // »èÁ¦ÇßÀ¸´Ï ºó °ø°£ÀÌ ÇÕÃÄÁ³À» ¼ö ÀÖÀ½ -> °»½Å
+        // ì‚­ì œí–ˆìœ¼ë‹ˆ ë¹ˆ ê³µê°„ì´ í•©ì³ì¡Œì„ ìˆ˜ ìˆìŒ -> ê°±ì‹ 
         updateMaxGap(row); 
 
         return row;
