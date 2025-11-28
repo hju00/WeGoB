@@ -1,0 +1,37 @@
+name: Weekly Study Merge
+
+on:
+  schedule:
+    # KST 금요일 23:00 (UTC 14:00)에 실행
+    - cron: '0 14 * * 5'
+  workflow_dispatch: # Actions 탭에서 수동으로 실행 가능
+
+jobs:
+  merge-prs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Merge all open PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 열려있는 PR 목록 가져오기
+          echo "Checking for open PRs..."
+          prs=$(gh pr list --state open --json number --jq '.[].number')
+
+          if [ -z "$prs" ]; then
+            echo "No open PRs to merge."
+            exit 0
+          fi
+
+          # 각 PR 머지 및 브랜치 삭제
+          for pr in $prs; do
+            echo "Merging PR #$pr..."
+            gh pr merge $pr --merge --delete-branch
+          done
