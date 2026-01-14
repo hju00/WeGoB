@@ -2,11 +2,11 @@ import java.util.*;
 
 class UserSolution {
 
-    // 그래프: graph[u]에 {v, w} 저장 (u <-> v, 가중치 w)
+
     static List<int[]>[] graph;
     static int N;
 
-    // 주택 제외용 stamp 마킹
+
     static int[] coffeeMark;
     static int[] bakeryMark;
     static int order;
@@ -40,19 +40,18 @@ class UserSolution {
     }
 
     public int calculate(int M, int[] mCoffee, int P, int[] mBakery, int R) {
-        // 이번 호출 stamp
-        order++;
-        if (order == Integer.MAX_VALUE) { // 극단 방지
-            Arrays.fill(coffeeMark, 0);
-            Arrays.fill(bakeryMark, 0);
-            order = 1;
+
+        order++; //호출 횟수 한번 추가
+
+        // 커피/제과점 마킹
+        for (int i = 0; i < M; i++) {
+            coffeeMark[mCoffee[i]] = order;
+        }
+        for (int i = 0; i < P; i++) {
+            bakeryMark[mBakery[i]] = order;
         }
 
-        // 커피/제과점 마킹 (주택 제외)
-        for (int i = 0; i < M; i++) coffeeMark[mCoffee[i]] = order;
-        for (int i = 0; i < P; i++) bakeryMark[mBakery[i]] = order;
-
-        // 멀티소스 다익스트라 2번 (int 거리)
+        // 다익스트라 2번
         int[] distC = dijkstra(mCoffee, M, R);
         int[] distB = dijkstra(mBakery, P, R);
 
@@ -79,7 +78,7 @@ class UserSolution {
         }
     }
 
-    // starts 배열의 앞 len개를 시작점으로, 거리 R까지만 퍼지는 멀티소스 다익스트라
+    // starts 배열의 앞 len개를 시작점으로, 거리 R까지만 퍼지는 다익스트라
     static int[] dijkstra(int[] starts, int len, int R) {
         int[] dist = new int[N];
         Arrays.fill(dist, INF);
@@ -90,7 +89,7 @@ class UserSolution {
         // 시작점들 초기화
         for (int i = 0; i < len; i++) {
             int s = starts[i];
-            if (dist[s] > 0) {     // 중복 시작점 방지
+            if (dist[s] > 0) {
                 dist[s] = 0;
                 pq.offer(new int[]{s, 0});
             }
@@ -101,14 +100,18 @@ class UserSolution {
             int v = cur[0];
             int d = cur[1];
 
-            if (d != dist[v]) continue; // stale skip
-            if (d > R) break;           // R 넘으면 더 볼 필요 없음
+            if (d != dist[v]) {
+                continue;
+            }
+            if (d > R) {
+                break;
+            }
 
             for (int[] nx : graph[v]) {
                 int to = nx[0];
                 int w = nx[1];
 
-                int nd = d + w;         // 여기서 d<=R라 int overflow 걱정 없음
+                int nd = d + w;
                 if (nd <= R && nd < dist[to]) {
                     dist[to] = nd;
                     pq.offer(new int[]{to, nd});
